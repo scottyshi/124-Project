@@ -246,8 +246,8 @@ def main():
 	    MAIN CODE
 	"""
 	start = time.time()
-	genotypes = loadGenotypes("example_data_1.txt")
-	phaseHaplotypes(genotypes, 15)
+	genotypes = loadGenotypes("example_data_3.txt")
+	phaseHaplotypes(genotypes, 7)
 	end = time.time()
 	print(end - start)
 
