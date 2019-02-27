@@ -107,6 +107,7 @@ def phaseHaplotypes(genotypes, window=50, overlap=3):
     decoded = [[s for s in string] for string in decoded]
     
     # Make transpose, write to file
+    outfile = "haplo_soln_" + str(window) + "_" + str(overlap) + ".txt"
     np.savetxt("haplo_soln.txt", np.array(decoded).astype(str).T, \
               delimiter=' ', newline='\r\n', fmt="%s")
 
@@ -321,11 +322,16 @@ def main():
 	"""
 	    MAIN CODE
 	"""
-	start = time.time()
-	genotypes = loadGenotypes("example_data_1.txt")
-	phaseHaplotypes(genotypes, 20, 4)
-	end = time.time()
-	print(end - start)
+	window = [30, 50, 75]
+	overlap = [5, 7, 9]
+	for w in window:
+		for o in overlap:
+			print("Running phasing with window {} and overlap {}".format(w, o))
+			start = time.time()
+			genotypes = loadGenotypes("example_data_1.txt")
+			phaseHaplotypes(genotypes, w, o)
+			end = time.time()
+			print(end - start)
 
 
 if __name__ == '__main__':
