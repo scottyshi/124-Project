@@ -4,6 +4,7 @@
 import numpy as np
 import operator
 import time
+import sys
 
 """
     Dataset Loading
@@ -45,7 +46,7 @@ def phaseHaplotypes(genotypes, window=50, overlap=3):
     curr_chunk = genotypes[:,:window]
     curr_geno_haplos, curr_geno_to_haplo = \
         generateHaplotypes(curr_chunk, window)
-    for i in range(2):
+    for i in range(4):
         EStep(curr_geno_to_haplo, curr_geno_haplos)
         MStep(curr_geno_to_haplo, curr_geno_haplos)
     cnt = 0
@@ -108,7 +109,7 @@ def phaseHaplotypes(genotypes, window=50, overlap=3):
     
     # Make transpose, write to file
     outfile = "haplo_soln_" + str(window) + "_" + str(overlap) + ".txt"
-    np.savetxt("haplo_soln.txt", np.array(decoded).astype(str).T, \
+    np.savetxt(outfile, np.array(decoded).astype(str).T, \
               delimiter=' ', newline='\r\n', fmt="%s")
 
 def decodeGenotypes(geno_chunk, window, ind, overlap, \
@@ -322,16 +323,14 @@ def main():
 	"""
 	    MAIN CODE
 	"""
-	window = [30, 50, 75]
-	overlap = [5, 7, 9]
-	for w in window:
-		for o in overlap:
-			print("Running phasing with window {} and overlap {}".format(w, o))
-			start = time.time()
-			genotypes = loadGenotypes("example_data_1.txt")
-			phaseHaplotypes(genotypes, w, o)
-			end = time.time()
-			print(end - start)
+	window = 23
+	overlap = 10
+	haplo_file = sys.argv[1]
+	start = time.time()
+	genotypes = loadGenotypes(haplo_file)
+	phaseHaplotypes(genotypes, window, overlap)
+	end = time.time()
+	print("Running time: ", (end - start))
 
 
 if __name__ == '__main__':
